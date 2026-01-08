@@ -1,6 +1,11 @@
 #!/bin/bash
 
 YGG="${YGG:-download}"
+YGEGE_URL="${YGEGE_URL}"
+if [ -z "$YGEGE_URL" ]; then
+    echo "YGEGE_URL is not set"
+    exit 1
+fi
 
 mkdir -p /config/Definitions/Custom/
 cp /app/indexers/*.yml /config/Definitions/Custom/
@@ -13,6 +18,9 @@ if [ "$YGG" = "magnet" ]; then
 else
     rm -f /config/Definitions/Custom/ygg-api-magnet.yml
 fi
+
+awk -v "var=$YGEGE_URL" '/links:/ && !x {print; print "  - " var; x=1; next} 1' ygege.yml > tmp && mv tmp ygege.yml
+
 
 # Execute the original entrypoint with all arguments
 exec /init-linuxserver "$@"
