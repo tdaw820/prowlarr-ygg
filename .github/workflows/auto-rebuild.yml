@@ -7,8 +7,8 @@ permissions:
 
 on:
   schedule:
-    # Check for updates every monday
-    - cron: "0 0 * * 1"
+    # Check for updates every 6 hours
+    - cron: "0 */6 * * *"
   workflow_dispatch:
     # Allow manual trigger
 
